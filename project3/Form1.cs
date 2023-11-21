@@ -45,7 +45,7 @@ namespace project3
         }
 
         // Function to set the time period
-        private void radioButton_CheckedChanged_setPeriod(object sender, EventArgs e)
+        private void setTimePeriod(object sender, EventArgs e)
         {
             // Sets the timePeriod based on which radio button is selected
             if (radioButton1_daily.Checked)
@@ -181,5 +181,6 @@ namespace project3
             form2.Text = tickerName;
             form2.Show();
         }
+
     }
 }

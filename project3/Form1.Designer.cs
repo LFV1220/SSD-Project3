@@ -57,6 +57,7 @@
             radioButton1_daily.TabStop = true;
             radioButton1_daily.Text = "Daily";
             radioButton1_daily.UseVisualStyleBackColor = true;
+            radioButton1_daily.CheckedChanged += setTimePeriod;
             // 
             // radioButton2_weekly
             // 
@@ -67,6 +68,7 @@
             radioButton2_weekly.TabIndex = 2;
             radioButton2_weekly.Text = "Weekly";
             radioButton2_weekly.UseVisualStyleBackColor = true;
+            radioButton2_weekly.CheckedChanged += setTimePeriod;
             // 
             // radioButton3_monthly
             // 
@@ -77,6 +79,7 @@
             radioButton3_monthly.TabIndex = 3;
             radioButton3_monthly.Text = "Monthly";
             radioButton3_monthly.UseVisualStyleBackColor = true;
+            radioButton3_monthly.CheckedChanged += setTimePeriod;
             // 
             // button1_viewTicker
             // 

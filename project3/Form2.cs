@@ -26,7 +26,24 @@ namespace project3
             this.tickerName = tickerName;
 
             // Displays the data when this form is called
-            displayData(candlesticks);
+            displayData(getCandlesticksInDateRange(candlesticks));
+        }
+
+        private BindingList<smartCandlestick> getCandlesticksInDateRange(BindingList<smartCandlestick> candlesticks)
+        {
+            BindingList<smartCandlestick> candlesticksInDateRange = new BindingList<smartCandlestick>();
+
+            // Iterate over all the candlesticks and only add the ones in the date range to the new candlesticks list
+            foreach (var cs in this.candlesticks)
+            {
+                DateTime csDate = DateTime.Parse(cs.date);
+                if (csDate < dateTimePicker2_toDate.Value && csDate > dateTimePicker1_fromDate.Value)
+                {
+                    candlesticksInDateRange.Add(cs);
+                }
+            }
+
+            return candlesticksInDateRange;
         }
 
         // Function to show the specific stock data pattern, selected by the user
@@ -136,6 +153,8 @@ namespace project3
                 }
             }
 
+            chart1_stockData.Invalidate();
+
         }
 
         // Helper function to create the annotations to show stock patterns
@@ -157,8 +176,6 @@ namespace project3
         // Function to apply the date range to the stock charts
         private void applyDates(object sender, EventArgs e)
         {
-            BindingList<smartCandlestick> candlesticksInRange = new BindingList<smartCandlestick>();
-
             // Check for valid date range
             if (dateTimePicker2_toDate.Value < dateTimePicker1_fromDate.Value)
             {
@@ -167,18 +184,7 @@ namespace project3
                 return;
             }
 
-            // Iterate over all the candlesticks and only add the ones in the date range to new candlesticks list
-            foreach (var cs in this.candlesticks)
-            {
-                DateTime csDate = DateTime.Parse(cs.date);
-                if (csDate < dateTimePicker2_toDate.Value && csDate > dateTimePicker1_fromDate.Value)
-                {
-                    candlesticksInRange.Add(cs);
-                }
-            }
-
-            // Call displayData function with new candlesticks list
-            displayData(candlesticksInRange);
+            displayData(getCandlesticksInDateRange(candlesticks));
         }
 
         // Function to reset what is on the form/page
@@ -188,15 +194,30 @@ namespace project3
             annotations = chart1_stockData.Annotations;
             annotations.Clear();
 
-            // Call displayData function with global candlesticks list 
-            displayData(this.candlesticks);
+            displayData(getCandlesticksInDateRange(candlesticks));
         }
 
         // Function to display the stock data as a stock price chart and volume chart
         private void displayData(BindingList<smartCandlestick> candlesticks)
         {
-            chart1_stockData.DataSource = candlesticks;
-        }
+            // Assuming "date" is the property representing X-axis values
+            chart1_stockData.Series[0].XValueMember = "date";
 
+            // Assuming "open", "high", "low", and "close" are the properties representing Y-axis values
+            chart1_stockData.Series[0].YValueMembers = "open,high,low,close";
+            // Assuming "date" is a DateTime property
+            chart1_stockData.DataSource = candlesticks.ToList();
+
+            //chart1_stockData.DataSource = candlesticks;
+            chart1_stockData.DataBind();
+
+
+            // volume chart stuff
+            chart2_volume.Series[0].XValueMember = "Date";
+            chart2_volume.Series[0].YValueMembers = "Volume";
+            chart2_volume.DataSource = candlesticks.ToList();
+            chart2_volume.DataBind();
+
+        }
     }
 }
