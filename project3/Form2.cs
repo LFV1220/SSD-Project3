@@ -33,12 +33,16 @@ namespace project3
         // populate stock pattern combobox
         private void populateStockPatterns()
         {
-            // List<Recognizer> Lr = new List<Recognizer>
-            // {
-            //      new BullishRecognizer(),
-            //      new BearishRecognizer(),
-            //      ...
-            // }
+            List<PatternRecognizer> Lr = new List<PatternRecognizer>
+            {
+                new BullishRecognizer(),
+                new BearishRecognizer(),
+                new DojiRecognizer(),
+                new EngulfingPatternRecognizer(),
+                new HammerRecognizer(),
+                new MarubozuRecognizer(),
+                new PeakAndValleyRecognizer()
+            };
         }
 
         private BindingList<smartCandlestick> getCandlesticksInDateRange(BindingList<smartCandlestick> candlesticks)
@@ -79,25 +83,61 @@ namespace project3
             // Remove any existing annotations (to refresh the view)
             annotations.Clear();
 
-            foreach (var cs in candlesticks)
+            // Iterate over candlesticks and add annotations for the selected pattern
+            for (int i = 0; i < candlesticks.Count; i++)
             {
+                var cs = candlesticks[i];
 
-                // Check if the candlestick is in the date range
-                // DateTime csDate = DateTime.Parse(cs.date);
-                // if (csDate >= dateTimePicker1_fromDate.Value && csDate <= dateTimePicker2_toDate.Value)
-                // {  
-                // }
-            }
+                // Check if the candlestick matches the selected pattern
+                bool isPatternMatch = false;
 
-            foreach (var series in chart1_stockData.Series)
-            {
-                foreach (var point in series.Points)
+                // Example: Check for Bullish pattern
+                if (stockPattern == 1 && cs.isBullish)
                 {
-                    Debug.Write("point: " + point);
-                    RectangleAnnotation annotation = new RectangleAnnotation();
-                    annotations.Add(annotation);
+                    isPatternMatch = true;
+                }
+                // Example: Check for Bearish pattern
+                else if (stockPattern == 2 && cs.isBearish)
+                {
+                    isPatternMatch = true;
+                }
+
+                if (isPatternMatch)
+                {
+                    annotations.Add(newAnnotation(cs, i));
                 }
             }
+
+            // Refresh the chart to display the annotations
+            chart1_stockData.Invalidate();
+
+        }
+
+        private RectangleAnnotation newAnnotation(smartCandlestick cs, int i)
+        {
+            // Define the width and height of the annotation
+            double annotationWidth = 10; // Adjust as needed
+            double annotationHeight = 10; // Adjust as needed
+
+            // Calculate the X-coordinate based on the index and chart properties
+            double chartWidth = chart1_stockData.Width;
+            double candlestickCount = candlesticks.Count;
+            double annotationX = (i + 0.5) * (chartWidth / candlestickCount) - (annotationWidth / 2);
+
+            // Calculate the Y-coordinate based on your logic or data
+            double annotationY = (double)cs.high;
+
+            // Add an annotation for this candlestick
+            RectangleAnnotation annotation = new RectangleAnnotation();
+            annotation.AxisX = chart1_stockData.ChartAreas[0].AxisX;
+            annotation.AxisY = chart1_stockData.ChartAreas[0].AxisY;
+            annotation.X = annotationX;
+            annotation.Y = annotationY;
+            annotation.Width = annotationWidth;
+            annotation.Height = annotationHeight;
+            annotation.Text = "Bullish Pattern"; // Replace with the appropriate pattern text
+
+            return annotation;
         }
 
         // Function to apply the date range to the stock charts
@@ -139,6 +179,31 @@ namespace project3
             chart1_stockData.Series[0]["PriceUpColor"] = "Green";
             // Set the color for "Down" days (negative change) <-- FIX THIS
             chart1_stockData.Series[0]["PriceDownColor"] = "Red";
+
+            // testing candlestick color 
+            foreach (var cs in candlesticks)
+            {
+                // Determine if the price is up or down
+                bool isUp = cs.close > cs.open;
+
+                // Get the data series for the candlestick chart
+                var series = chart1_stockData.Series[0];
+
+                // Set the color for "Up" days (positive change)
+                if (isUp)
+                {
+                    series.Points.AddXY(cs.date, cs.low, cs.high, cs.open, cs.close);
+                    series.Points[series.Points.Count - 1].Color = Color.Green;
+                }
+                // Set the color for "Down" days (negative change)
+                else
+                {
+                    series.Points.AddXY(cs.date, cs.low, cs.high, cs.open, cs.close);
+                    series.Points[series.Points.Count - 1].Color = Color.Red;
+                }
+            }
+
+            // TODO: STILL NEED TO ADD CHART TITLES
 
             //chart1_stockData.DataSource = candlesticks;
             chart1_stockData.DataBind();
