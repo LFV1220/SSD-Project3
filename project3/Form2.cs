@@ -98,8 +98,6 @@ namespace project3
                     annotations.Add(annotation);
                 }
             }
-
-
         }
 
         // Function to apply the date range to the stock charts
