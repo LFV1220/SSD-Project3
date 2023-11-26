@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,17 @@ namespace project3
             displayData(getCandlesticksInDateRange(candlesticks));
         }
 
+        // populate stock pattern combobox
+        private void populateStockPatterns()
+        {
+            // List<Recognizer> Lr = new List<Recognizer>
+            // {
+            //      new BullishRecognizer(),
+            //      new BearishRecognizer(),
+            //      ...
+            // }
+        }
+
         private BindingList<smartCandlestick> getCandlesticksInDateRange(BindingList<smartCandlestick> candlesticks)
         {
             BindingList<smartCandlestick> candlesticksInDateRange = new BindingList<smartCandlestick>();
@@ -46,6 +58,7 @@ namespace project3
             return candlesticksInDateRange;
         }
 
+        // TODO: FIX ANNOTATIONS AND CHANGE STOCK PATTERN CHECKING 
         // Function to show the specific stock data pattern, selected by the user
         private void applyPattern(object sender, EventArgs e)
         {
@@ -66,111 +79,27 @@ namespace project3
             // Remove any existing annotations (to refresh the view)
             annotations.Clear();
 
-            // Calculate a size to help with the annotation sizing/positioning
-            double avgInterval = (DateTime.Parse(candlesticks[1].date) - DateTime.Parse(candlesticks[0].date)).TotalDays / 2;
-
             foreach (var cs in candlesticks)
             {
+
                 // Check if the candlestick is in the date range
-                DateTime csDate = DateTime.Parse(cs.date);
-                if (csDate >= dateTimePicker1_fromDate.Value && csDate <= dateTimePicker2_toDate.Value)
+                // DateTime csDate = DateTime.Parse(cs.date);
+                // if (csDate >= dateTimePicker1_fromDate.Value && csDate <= dateTimePicker2_toDate.Value)
+                // {  
+                // }
+            }
+
+            foreach (var series in chart1_stockData.Series)
+            {
+                foreach (var point in series.Points)
                 {
-                    switch (stockPattern)
-                    {
-                        // Stock pattern: Bullish 
-                        case 1:
-                            if (cs.isBullish)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                        // Stock pattern: Bearish 
-                        case 2:
-                            if (cs.isBearish)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                        // Stock pattern: Neutral 
-                        case 3:
-                            if (cs.isNeutral)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                        // Stock pattern: Marubozu 
-                        case 4:
-                            if (cs.isMarubozu)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                        // Stock pattern: Doji 
-                        case 5:
-                            if (cs.isDoji)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                        // Stock pattern: Dragonfly Doji 
-                        case 6:
-                            if (cs.isDragonFlyDoji)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                        // Stock pattern: Gravestone Doji 
-                        case 7:
-                            if (cs.isGravestoneDoji)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                        // Stock pattern: Hammer 
-                        case 8:
-                            if (cs.isHammer)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                        // Stock pattern: Inverted Hammer 
-                        case 9:
-                            if (cs.isInvertedHammer)
-                            {
-                                RectangleAnnotation annotation = newAnnotation(cs, csDate, avgInterval);
-                                annotations.Add(annotation);
-                            }
-                            break;
-                    }
+                    Debug.Write("point: " + point);
+                    RectangleAnnotation annotation = new RectangleAnnotation();
+                    annotations.Add(annotation);
                 }
             }
 
-            chart1_stockData.Invalidate();
 
-        }
-
-        // Helper function to create the annotations to show stock patterns
-        private RectangleAnnotation newAnnotation(smartCandlestick cs, DateTime csDate, double avgInterval)
-        {
-            // Creates an annotation and other properties for sizing/positioning
-            RectangleAnnotation annotation = new RectangleAnnotation();
-            annotation.AxisX = chart1_stockData.ChartAreas[0].AxisX;
-            annotation.AxisY = chart1_stockData.ChartAreas[0].AxisY;
-            annotation.X = csDate.ToOADate() - avgInterval;
-            annotation.Y = (double)cs.high;
-            annotation.Width = 2.0;
-            annotation.Height = (double)cs.range;
-            annotation.BackColor = Color.FromArgb(128, Color.Yellow);
-
-            return annotation;
         }
 
         // Function to apply the date range to the stock charts
@@ -208,6 +137,11 @@ namespace project3
             // Assuming "date" is a DateTime property
             chart1_stockData.DataSource = candlesticks.ToList();
 
+            // Set the color for "Up" days (positive change)
+            chart1_stockData.Series[0]["PriceUpColor"] = "Green";
+            // Set the color for "Down" days (negative change) <-- FIX THIS
+            chart1_stockData.Series[0]["PriceDownColor"] = "Red";
+
             //chart1_stockData.DataSource = candlesticks;
             chart1_stockData.DataBind();
 
@@ -219,5 +153,6 @@ namespace project3
             chart2_volume.DataBind();
 
         }
+
     }
 }
