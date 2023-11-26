@@ -9,7 +9,7 @@ public class GravestoneDojiRecognizer : PatternRecognizer
         this.threshold = threshold;
     }
 
-    public override IEnumerable<PatternMatch> IdentifyPatterns(List<smartCandlestick> candlesticks)
+    public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 

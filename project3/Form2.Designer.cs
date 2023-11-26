@@ -91,7 +91,7 @@
             // comboBox1_stockPattern
             // 
             comboBox1_stockPattern.FormattingEnabled = true;
-            comboBox1_stockPattern.Items.AddRange(new object[] { "", "Bullish", "Bearish", "Neutral", "Marubozu", "Doji", "Dragonfly Doji", "Gravestone Doji", "Hammer", "Inverted Hammer" });
+            comboBox1_stockPattern.Items.AddRange(new object[] { "Bullish", "Bearish", "Neutral", "Marubozu", "Doji", "Dragonfly Doji", "Gravestone Doji", "Hammer", "Inverted Hammer", "Bullish Engulfing", "Bearish Engulfing", "Bullish Harami", "Bearish Harami", "Peak", "Valley" });
             comboBox1_stockPattern.Location = new Point(1029, 77);
             comboBox1_stockPattern.Name = "comboBox1_stockPattern";
             comboBox1_stockPattern.Size = new Size(156, 23);

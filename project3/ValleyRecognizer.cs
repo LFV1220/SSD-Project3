@@ -5,7 +5,7 @@ public class ValleyRecognizer : PatternRecognizer
     // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public ValleyRecognizer() : base(3, "Valley") { }
 
-    public override IEnumerable<PatternMatch> IdentifyPatterns(List<smartCandlestick> candlesticks)
+    public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
