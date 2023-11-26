@@ -1,9 +1,11 @@
-﻿public class HammerRecognizer : PatternRecognizer
+﻿using project3;
+
+public class HammerRecognizer : PatternRecognizer
 {
     // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public HammerRecognizer() : base(1, "Hammer") { }
 
-    public override IEnumerable<PatternMatch> IdentifyPatterns(List<Candlestick> candlesticks)
+    public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
@@ -24,7 +26,7 @@
         return matches;
     }
 
-    private bool IsHammer(Candlestick candlestick)
+    private bool IsHammer(smartCandlestick candlestick)
     {
         // Implement logic to check if the candlestick matches the Hammer pattern
         var body = Math.Abs(candlestick.Close - candlestick.Open);

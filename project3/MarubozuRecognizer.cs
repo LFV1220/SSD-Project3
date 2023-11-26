@@ -1,9 +1,11 @@
-﻿public class MarubozuRecognizer : PatternRecognizer
+﻿using project3;
+
+public class MarubozuRecognizer : PatternRecognizer
 {
     // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public MarubozuRecognizer() : base(1, "Marubozu") { }
 
-    public override IEnumerable<PatternMatch> IdentifyPatterns(List<Candlestick> candlesticks)
+    public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
@@ -24,7 +26,7 @@
         return matches;
     }
 
-    private bool IsMarubozu(Candlestick candlestick)
+    private bool IsMarubozu(smartCandlestick candlestick)
     {
         // Implement logic to check if the candlestick matches the Marubozu pattern
         var body = Math.Abs(candlestick.Close - candlestick.Open);

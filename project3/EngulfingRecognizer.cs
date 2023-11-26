@@ -1,9 +1,11 @@
-﻿public class EngulfingPatternRecognizer : PatternRecognizer
+﻿using project3;
+
+public class EngulfingPatternRecognizer : PatternRecognizer
 {
     // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public EngulfingPatternRecognizer() : base(2, "Engulfing") { }
 
-    public override IEnumerable<PatternMatch> IdentifyPatterns(List<Candlestick> candlesticks)
+    public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
@@ -25,7 +27,7 @@
         return matches;
     }
 
-    private bool IsEngulfing(Candlestick first, Candlestick second)
+    private bool IsEngulfing(smartCandlestick first, smartCandlestick second)
     {
         // Implement logic to check if the pair of candlesticks matches the Engulfing pattern
         // An engulfing pattern is identified when the second candle's body completely engulfs the first one's body

@@ -1,9 +1,11 @@
-﻿public class PeakAndValleyRecognizer : PatternRecognizer
+﻿using project3;
+
+public class PeakAndValleyRecognizer : PatternRecognizer
 {
     // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public PeakAndValleyRecognizer() : base(3, "Peak and Valley") { }
 
-    public override IEnumerable<PatternMatch> IdentifyPatterns(List<Candlestick> candlesticks)
+    public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
@@ -33,12 +35,12 @@
         return matches;
     }
 
-    private bool IsPeak(Candlestick left, Candlestick middle, Candlestick right)
+    private bool IsPeak(smartCandlestick left, smartCandlestick middle, smartCandlestick right)
     {
         return middle.High > left.High && middle.High > right.High;
     }
 
-    private bool IsValley(Candlestick left, Candlestick middle, Candlestick right)
+    private bool IsValley(smartCandlestick left, smartCandlestick middle, smartCandlestick right)
     {
         return middle.Low < left.Low && middle.Low < right.Low;
     }

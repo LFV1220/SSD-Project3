@@ -1,9 +1,11 @@
-﻿public class DojiRecognizer : PatternRecognizer
+﻿using project3;
+
+public class DojiRecognizer : PatternRecognizer
 {
     // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public DojiRecognizer() : base(1, "Doji") { }
 
-    public override IEnumerable<PatternMatch> IdentifyPatterns(List<Candlestick> candlesticks)
+    public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
@@ -25,7 +27,7 @@
         return matches;
     }
 
-    private bool IsDoji(Candlestick candlestick)
+    private bool IsDoji(smartCandlestick candlestick)
     {
         // You will implement the logic here to determine if the candlestick is a Doji
         // A Doji is typically characterized by a very small body compared to its shadows
