@@ -30,8 +30,9 @@ namespace project3
             displayData(getCandlesticksInDateRange(candlesticks));
         }
 
-        // populate stock pattern combobox
-        private void populateStockPatterns()
+        // TODO: FIX ANNOTATIONS AND CHANGE STOCK PATTERN CHECKING 
+        // Function to show the specific stock data pattern, selected by the user
+        private void applyPattern(object sender, EventArgs e)
         {
             List<PatternRecognizer> Lr = new List<PatternRecognizer>
             {
@@ -53,48 +54,16 @@ namespace project3
                 new PeakAndValleyRecognizer()
             };
 
-            comboBox1_stockPattern.DataSource = Lr;
-            comboBox1_stockPattern.DisplayMember = "PatternName";
-
-            button1_applyPattern.Click += applyPattern;
-        }
-
-        // TODO: FIX ANNOTATIONS AND CHANGE STOCK PATTERN CHECKING 
-        // Function to show the specific stock data pattern, selected by the user
-        private void applyPattern(object sender, EventArgs e)
-        {
             // Get the index of the selected index from the comboBox for stock patterns
             int stockPattern = comboBox1_stockPattern.SelectedIndex;
 
             // Check for a valid stock pattern index from combobox 
-            if (stockPattern == -1 || stockPattern == 0)
+            if(stockPattern == -1)
             {
                 // Error, no ticker selected
                 MessageBox.Show("Please select a stock pattern.", "No Stock Pattern Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            // Get the selected pattern recognizer from the ComboBox
-            PatternRecognizer selectedPattern = comboBox1_stockPattern.SelectedItem as PatternRecognizer;
-
-            if (selectedPattern != null)
-            {
-                // Create an instance of the selected pattern recognizer
-                // You may need to pass additional parameters to the constructor
-                PatternRecognizer recognizerInstance = Activator.CreateInstance(selectedPattern.GetType()) as PatternRecognizer;
-
-                if (recognizerInstance != null)
-                {
-                    // Now you have an instance of the selected pattern recognizer
-                    // You can use it as needed
-                    // Example: recognizerInstance.SomeMethod();
-                    Debug.Write("pattern: " + recognizerInstance);
-                }
-            }
-
-
-
-
 
             // Create an annotation collection to store the annotations
             annotations = chart1_stockData.Annotations;
@@ -102,29 +71,40 @@ namespace project3
             // Remove any existing annotations (to refresh the view)
             annotations.Clear();
 
-            // Iterate over candlesticks and add annotations for the selected pattern
-            for (int i = 0; i < candlesticks.Count; i++)
+            // Get the selected pattern recognizer from the ComboBox
+            PatternRecognizer selectedPattern = Lr[stockPattern];
+
+            if(selectedPattern == null)
             {
-                var cs = candlesticks[i];
+                // error here
+                Debug.Write("ERROR WITH PATTERN SELECTION");
+            }
 
-                // Check if the candlestick matches the selected pattern
-                bool isPatternMatch = false;
+            // Create an instance of the selected pattern recognizer
+            // You may need to pass additional parameters to the constructor
+            PatternRecognizer recognizerInstance = Activator.CreateInstance(selectedPattern.GetType()) as PatternRecognizer;
+            Debug.WriteLine("recognizerInstance: " + recognizerInstance);
+            Debug.WriteLine("selectedPattern: " + selectedPattern.GetType());
 
-                // Example: Check for Bullish pattern
-                if (stockPattern == 1 && cs.isBullish)
+            if(recognizerInstance != null)
+            {
+                // Now you have an instance of the selected pattern recognizer
+                // You can use it as needed
+                // Example: recognizerInstance.SomeMethod();
+                IEnumerable<PatternMatch> patternIndices = recognizerInstance.recognizePattern(getCandlesticksInDateRange(candlesticks).ToList());
+                List<PatternMatch> patternIndicesList = patternIndices.ToList();
+
+                List<smartCandlestick> cs = getCandlesticksInDateRange(candlesticks).ToList();
+                for(int i = 0; i < getCandlesticksInDateRange(candlesticks).Count; i++)
                 {
-                    isPatternMatch = true;
-                }
-                // Example: Check for Bearish pattern
-                else if (stockPattern == 2 && cs.isBearish)
-                {
-                    isPatternMatch = true;
+                    if(i >= patternIndicesList[i].startIndex && i <= patternIndicesList[i].endIndex)
+                    {
+                        // add annotation
+                        Debug.WriteLine("i: " + i);
+                        annotations.Add(newAnnotation(cs[i], i));
+                    }
                 }
 
-                if (isPatternMatch)
-                {
-                    annotations.Add(newAnnotation(cs, i));
-                }
             }
 
             // Refresh the chart to display the annotations
@@ -144,7 +124,7 @@ namespace project3
             double annotationX = (i + 0.5) * (chartWidth / candlestickCount) - (annotationWidth / 2);
 
             // Calculate the Y-coordinate based on your logic or data
-            double annotationY = (double)cs.high;
+            double annotationY = (double) cs.high;
 
             // Add an annotation for this candlestick
             RectangleAnnotation annotation = new RectangleAnnotation();
@@ -164,10 +144,10 @@ namespace project3
             BindingList<smartCandlestick> candlesticksInDateRange = new BindingList<smartCandlestick>();
 
             // Iterate over all the candlesticks and only add the ones in the date range to the new candlesticks list
-            foreach (var cs in this.candlesticks)
+            foreach(var cs in this.candlesticks)
             {
                 DateTime csDate = DateTime.Parse(cs.date);
-                if (csDate < dateTimePicker2_toDate.Value && csDate > dateTimePicker1_fromDate.Value)
+                if(csDate < dateTimePicker2_toDate.Value && csDate > dateTimePicker1_fromDate.Value)
                 {
                     candlesticksInDateRange.Add(cs);
                 }
@@ -180,7 +160,7 @@ namespace project3
         private void applyDates(object sender, EventArgs e)
         {
             // Check for valid date range
-            if (dateTimePicker2_toDate.Value < dateTimePicker1_fromDate.Value)
+            if(dateTimePicker2_toDate.Value < dateTimePicker1_fromDate.Value)
             {
                 // Error, invalid date range
                 MessageBox.Show("Please make sure the \"from\" date is before the \"to\" date.", "Invalid Date Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
