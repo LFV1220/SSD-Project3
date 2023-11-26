@@ -37,29 +37,26 @@ namespace project3
             {
                 new BullishRecognizer(),
                 new BearishRecognizer(),
-                new DojiRecognizer(),
-                new EngulfingPatternRecognizer(),
-                new HammerRecognizer(),
+                // new NeutralRecognizer(),
                 new MarubozuRecognizer(),
+                new DojiRecognizer(),
+                // new DragonflyDojiRecognizer(),
+                // new GravestoneDojiRecognizer(),
+                new HammerRecognizer(),
+                // new InvertedHammerRecognizer(),
+                new BullishEngulfingRecognizer(),
+                new BearishEngulfingRecognizer(),
+                new BullishHaramiRecognizer(),
+                new BearishHaramiRecognizer(),
+                // new PeakRecognizer(),
+                // new ValleyRecognizer(),
                 new PeakAndValleyRecognizer()
             };
-        }
 
-        private BindingList<smartCandlestick> getCandlesticksInDateRange(BindingList<smartCandlestick> candlesticks)
-        {
-            BindingList<smartCandlestick> candlesticksInDateRange = new BindingList<smartCandlestick>();
+            comboBox1_stockPattern.DataSource = Lr;
+            comboBox1_stockPattern.DisplayMember = "PatternName";
 
-            // Iterate over all the candlesticks and only add the ones in the date range to the new candlesticks list
-            foreach (var cs in this.candlesticks)
-            {
-                DateTime csDate = DateTime.Parse(cs.date);
-                if (csDate < dateTimePicker2_toDate.Value && csDate > dateTimePicker1_fromDate.Value)
-                {
-                    candlesticksInDateRange.Add(cs);
-                }
-            }
-
-            return candlesticksInDateRange;
+            button1_applyPattern.Click += applyPattern;
         }
 
         // TODO: FIX ANNOTATIONS AND CHANGE STOCK PATTERN CHECKING 
@@ -76,6 +73,28 @@ namespace project3
                 MessageBox.Show("Please select a stock pattern.", "No Stock Pattern Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            // Get the selected pattern recognizer from the ComboBox
+            PatternRecognizer selectedPattern = comboBox1_stockPattern.SelectedItem as PatternRecognizer;
+
+            if (selectedPattern != null)
+            {
+                // Create an instance of the selected pattern recognizer
+                // You may need to pass additional parameters to the constructor
+                PatternRecognizer recognizerInstance = Activator.CreateInstance(selectedPattern.GetType()) as PatternRecognizer;
+
+                if (recognizerInstance != null)
+                {
+                    // Now you have an instance of the selected pattern recognizer
+                    // You can use it as needed
+                    // Example: recognizerInstance.SomeMethod();
+                    Debug.Write("pattern: " + recognizerInstance);
+                }
+            }
+
+
+
+
 
             // Create an annotation collection to store the annotations
             annotations = chart1_stockData.Annotations;
@@ -140,6 +159,23 @@ namespace project3
             return annotation;
         }
 
+        private BindingList<smartCandlestick> getCandlesticksInDateRange(BindingList<smartCandlestick> candlesticks)
+        {
+            BindingList<smartCandlestick> candlesticksInDateRange = new BindingList<smartCandlestick>();
+
+            // Iterate over all the candlesticks and only add the ones in the date range to the new candlesticks list
+            foreach (var cs in this.candlesticks)
+            {
+                DateTime csDate = DateTime.Parse(cs.date);
+                if (csDate < dateTimePicker2_toDate.Value && csDate > dateTimePicker1_fromDate.Value)
+                {
+                    candlesticksInDateRange.Add(cs);
+                }
+            }
+
+            return candlesticksInDateRange;
+        }
+
         // Function to apply the date range to the stock charts
         private void applyDates(object sender, EventArgs e)
         {
@@ -180,28 +216,6 @@ namespace project3
             // Set the color for "Down" days (negative change) <-- FIX THIS
             chart1_stockData.Series[0]["PriceDownColor"] = "Red";
 
-            // testing candlestick color 
-            foreach (var cs in candlesticks)
-            {
-                // Determine if the price is up or down
-                bool isUp = cs.close > cs.open;
-
-                // Get the data series for the candlestick chart
-                var series = chart1_stockData.Series[0];
-
-                // Set the color for "Up" days (positive change)
-                if (isUp)
-                {
-                    series.Points.AddXY(cs.date, cs.low, cs.high, cs.open, cs.close);
-                    series.Points[series.Points.Count - 1].Color = Color.Green;
-                }
-                // Set the color for "Down" days (negative change)
-                else
-                {
-                    series.Points.AddXY(cs.date, cs.low, cs.high, cs.open, cs.close);
-                    series.Points[series.Points.Count - 1].Color = Color.Red;
-                }
-            }
 
             // TODO: STILL NEED TO ADD CHART TITLES
 

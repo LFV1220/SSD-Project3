@@ -5,7 +5,7 @@ public class BearishEngulfingRecognizer : PatternRecognizer
     // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public BearishEngulfingRecognizer() : base(2, "Bearish Engulfing") { }
 
-    public override IEnumerable<PatternMatch> IdentifyPatterns(List<smartCandlestick> candlesticks)
+    public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
@@ -19,7 +19,7 @@ public class BearishEngulfingRecognizer : PatternRecognizer
                     // Bearish Engulfing pattern consists of two candlesticks
                     startIndex = i,
                     endIndex = i + 1, 
-                    patternName: "Bearish Engulfing"
+                    patternName = "Bearish Engulfing"
                 });
             }
         }
