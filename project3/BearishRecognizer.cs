@@ -15,9 +15,9 @@ public class BearishRecognizer : PatternRecognizer
             {
                 matches.Add(new PatternMatch
                 {
-                    StartIndex = i,
-                    EndIndex = i,
-                    PatternName = "Bearish"
+                    startIndex = i,
+                    endIndex = i,
+                    patternName = "Bearish"
                 });
             }
         }
@@ -27,6 +27,6 @@ public class BearishRecognizer : PatternRecognizer
 
     private bool IsBearish(smartCandlestick candlestick)
     {
-        return candlestick.Close < candlestick.Open;
+        return candlestick.close < candlestick.open;
     }
 }

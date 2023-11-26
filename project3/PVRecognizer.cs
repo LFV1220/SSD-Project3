@@ -16,18 +16,18 @@ public class PeakAndValleyRecognizer : PatternRecognizer
             {
                 matches.Add(new PatternMatch
                 {
-                    StartIndex = i - 1,
-                    EndIndex = i + 1,
-                    PatternName = "Peak"
+                    startIndex = i - 1,
+                    endIndex = i + 1,
+                    patternName = "Peak"
                 });
             }
             else if(IsValley(candlesticks[i - 1], candlesticks[i], candlesticks[i + 1]))
             {
                 matches.Add(new PatternMatch
                 {
-                    StartIndex = i - 1,
-                    EndIndex = i + 1,
-                    PatternName = "Valley"
+                    startIndex = i - 1,
+                    endIndex = i + 1,
+                    patternName = "Valley"
                 });
             }
         }
@@ -37,11 +37,11 @@ public class PeakAndValleyRecognizer : PatternRecognizer
 
     private bool IsPeak(smartCandlestick left, smartCandlestick middle, smartCandlestick right)
     {
-        return middle.High > left.High && middle.High > right.High;
+        return middle.high > left.high && middle.high > right.high;
     }
 
     private bool IsValley(smartCandlestick left, smartCandlestick middle, smartCandlestick right)
     {
-        return middle.Low < left.Low && middle.Low < right.Low;
+        return middle.low < left.low && middle.low < right.low;
     }
 }

@@ -16,9 +16,9 @@ public class HammerRecognizer : PatternRecognizer
                 matches.Add(new PatternMatch
                 {
                     // Hammer is a single-candlestick pattern
-                    StartIndex = i,
-                    EndIndex = i, 
-                    PatternName = "Hammer"
+                    startIndex = i,
+                    endIndex = i, 
+                    patternName = "Hammer"
                 });
             }
         }
@@ -29,10 +29,10 @@ public class HammerRecognizer : PatternRecognizer
     private bool IsHammer(smartCandlestick candlestick)
     {
         // Implement logic to check if the candlestick matches the Hammer pattern
-        var body = Math.Abs(candlestick.Close - candlestick.Open);
-        var lowerShadow = candlestick.Open - candlestick.Low;
-        var upperShadow = candlestick.High - candlestick.Close;
-        var totalLength = candlestick.High - candlestick.Low;
+        var body = Math.Abs(candlestick.close - candlestick.open);
+        var lowerShadow = candlestick.open - candlestick.low;
+        var upperShadow = candlestick.high - candlestick.close;
+        var totalLength = candlestick.high - candlestick.low;
 
         // These thresholds are examples; adjust based on your specific criteria for a Hammer
         bool isSmallBody = body <= (totalLength * 0.2m);

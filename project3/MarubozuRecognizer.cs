@@ -16,9 +16,9 @@ public class MarubozuRecognizer : PatternRecognizer
                 matches.Add(new PatternMatch
                 {
                     // Marubozu is a single-candlestick pattern
-                    StartIndex = i,
-                    EndIndex = i, 
-                    PatternName = "Marubozu"
+                    startIndex = i,
+                    endIndex = i, 
+                    patternName = "Marubozu"
                 });
             }
         }
@@ -29,10 +29,10 @@ public class MarubozuRecognizer : PatternRecognizer
     private bool IsMarubozu(smartCandlestick candlestick)
     {
         // Implement logic to check if the candlestick matches the Marubozu pattern
-        var body = Math.Abs(candlestick.Close - candlestick.Open);
-        var upperShadow = candlestick.High - Math.Max(candlestick.Open, candlestick.Close);
-        var lowerShadow = Math.Min(candlestick.Open, candlestick.Close) - candlestick.Low;
-        var totalLength = candlestick.High - candlestick.Low;
+        var body = Math.Abs(candlestick.close - candlestick.open);
+        var upperShadow = candlestick.high - Math.Max(candlestick.open, candlestick.close);
+        var lowerShadow = Math.Min(candlestick.open, candlestick.close) - candlestick.low;
+        var totalLength = candlestick.high - candlestick.low;
 
         // These thresholds are examples; adjust based on your specific criteria for a Marubozu
         bool isFullBody = body >= (totalLength * 0.95m);

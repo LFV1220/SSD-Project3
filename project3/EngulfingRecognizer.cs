@@ -17,9 +17,9 @@ public class EngulfingPatternRecognizer : PatternRecognizer
                 matches.Add(new PatternMatch
                 {
                     // Engulfing pattern consists of two candlesticks
-                    StartIndex = i,
-                    EndIndex = i + 1, 
-                    PatternName = "Engulfing"
+                    startIndex = i,
+                    endIndex = i + 1, 
+                    patternName = "Engulfing"
                 });
             }
         }
@@ -33,12 +33,12 @@ public class EngulfingPatternRecognizer : PatternRecognizer
         // An engulfing pattern is identified when the second candle's body completely engulfs the first one's body
 
         // Check if the first candle is bearish and the second is bullish for a Bullish Engulfing
-        bool isBullishEngulfing = first.Open > first.Close && second.Open < second.Close &&
-                                  second.Open < first.Close && second.Close > first.Open;
+        bool isBullishEngulfing = first.open > first.close && second.open < second.close &&
+                                  second.open < first.close && second.close > first.open;
 
         // Check if the first candle is bullish and the second is bearish for a Bearish Engulfing
-        bool isBearishEngulfing = first.Open < first.Close && second.Open > second.Close &&
-                                  second.Open > first.Close && second.Close < first.Open;
+        bool isBearishEngulfing = first.open < first.close && second.open > second.close &&
+                                  second.open > first.close && second.close < first.open;
 
         return isBullishEngulfing || isBearishEngulfing;
     }

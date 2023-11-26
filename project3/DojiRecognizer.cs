@@ -17,9 +17,9 @@ public class DojiRecognizer : PatternRecognizer
                 matches.Add(new PatternMatch
                 {
                     // Doji is a single-candlestick pattern, so start and end are the same
-                    EndIndex = i, 
-                    StartIndex = i,
-                    PatternName = "Doji"
+                    endIndex = i, 
+                    startIndex = i,
+                    patternName = "Doji"
                 });
             }
         }
@@ -31,8 +31,8 @@ public class DojiRecognizer : PatternRecognizer
     {
         // You will implement the logic here to determine if the candlestick is a Doji
         // A Doji is typically characterized by a very small body compared to its shadows
-        var body = Math.Abs(candlestick.Close - candlestick.Open);
-        var range = candlestick.High - candlestick.Low;
+        var body = Math.Abs(candlestick.close - candlestick.open);
+        var range = candlestick.high - candlestick.low;
 
         // This is just an example threshold, you will define what constitutes a "small body"
         return body <= (range * 0.1m);
