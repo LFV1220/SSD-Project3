@@ -2,21 +2,20 @@
 
 public class BullishHaramiRecognizer : PatternRecognizer
 {
-    // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public BullishHaramiRecognizer() : base(2, "Bullish Harami") { }
 
+    // Function to find bullish harami stock patterns
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
-        // -1 because we need a pair of candlesticks
         for(int i = 0; i < candlesticks.Count - 1; i++) 
         {
+            // Find multi candlestick pattern
             if(IsBullishHarami(candlesticks[i], candlesticks[i + 1]))
             {
                 matches.Add(new PatternMatch
                 {
-                    // Bullish Harami pattern consists of two candlesticks
                     startIndex = i,
                     endIndex = i + 1, 
                     patternName = "Bullish Harami"

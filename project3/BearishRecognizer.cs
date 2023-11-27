@@ -2,16 +2,17 @@
 
 public class BearishRecognizer : PatternRecognizer
 {
-    // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public BearishRecognizer() : base(1, "Bearish") { }
 
+    // Function to find bearish stock patterns
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
         for(int i = 0; i < candlesticks.Count; i++)
         {
-            if(IsBearish(candlesticks[i]))
+            // Single candlestick pattern
+            if(candlesticks[i].isBearish)
             {
                 matches.Add(new PatternMatch
                 {
@@ -23,10 +24,5 @@ public class BearishRecognizer : PatternRecognizer
         }
 
         return matches;
-    }
-
-    private bool IsBearish(smartCandlestick candlestick)
-    {
-        return candlestick.close < candlestick.open;
     }
 }

@@ -2,14 +2,13 @@
 
 public class BearishHaramiRecognizer : PatternRecognizer
 {
-    // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public BearishHaramiRecognizer() : base(2, "Bearish Harami") { }
 
+    // Function to find bearish harami stock patterns
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
-        // -1 because we need a pair of candlesticks
         for(int i = 0; i < candlesticks.Count - 1; i++) 
         {
             if(IsBearishHarami(candlesticks[i], candlesticks[i + 1]))
@@ -27,6 +26,7 @@ public class BearishHaramiRecognizer : PatternRecognizer
         return matches;
     }
 
+    // Helper function to find bearish harami multi candlesticks
     private bool IsBearishHarami(smartCandlestick first, smartCandlestick second)
     {
         // A Bearish Harami pattern occurs when a smaller bearish candle follows a larger bullish candle

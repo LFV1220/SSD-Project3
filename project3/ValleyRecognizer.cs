@@ -2,22 +2,24 @@
 
 public class ValleyRecognizer : PatternRecognizer
 {
-    // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public ValleyRecognizer() : base(3, "Valley") { }
 
+    // Function to recognize valley patterns
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
+        // New list of matches
         var matches = new List<PatternMatch>();
 
-        // Logic to identify Valley patterns
-        for(int i = 1; i < candlesticks.Count - 1; i++) // Start from 1 and end 1 early to check trio of candlesticks
+        for(int i = 1; i < candlesticks.Count - 1; i++)
         {
+            // Check to see if the 3 candlesticks are a valley
             if(IsValley(candlesticks[i - 1], candlesticks[i], candlesticks[i + 1]))
             {
                 matches.Add(new PatternMatch
                 {
+                    // Since its a 3 candlestick pattern
                     startIndex = i - 1,
-                    endIndex = i + 1, // Valley pattern consists of three candlesticks
+                    endIndex = i + 1,
                     patternName = "Valley"
                 });
             }

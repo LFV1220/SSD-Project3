@@ -2,21 +2,21 @@
 
 public class NeutralRecognizer : PatternRecognizer
 {
-    // A threshold to define how close open and close should be
-    private readonly decimal threshold; 
+    // Threshold for how close the open and close should be 
+    private readonly decimal threshold = 0.01m;
 
-    public NeutralRecognizer(decimal threshold = 0.01m) : base(1, "Neutral")
-    {
-        this.threshold = threshold;
-    }
+    public NeutralRecognizer() : base(1, "Neutral") { }
 
+    // Function to find neutral stock patterns
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
+        // New list of matches 
         var matches = new List<PatternMatch>();
 
-        for(int i = 0; i < candlesticks.Count; i++)
+        for (int i = 0; i < candlesticks.Count; i++)
         {
-            if(IsNeutral(candlesticks[i]))
+            // Single candlestick pattern
+            if (candlesticks[i].isNeutral)
             {
                 matches.Add(new PatternMatch
                 {
@@ -28,11 +28,5 @@ public class NeutralRecognizer : PatternRecognizer
         }
 
         return matches;
-    }
-
-    private bool IsNeutral(smartCandlestick candlestick)
-    {
-        var bodySize = Math.Abs(candlestick.close - candlestick.open);
-        return bodySize <= (threshold * Math.Abs(candlestick.high - candlestick.low));
     }
 }

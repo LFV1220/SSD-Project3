@@ -9,18 +9,19 @@ public class InvertedHammerRecognizer : PatternRecognizer
         this.threshold = threshold;
     }
 
+    // Function to find inverted hammer stock patterns
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
+        // New list for matches
         var matches = new List<PatternMatch>();
 
-        // Logic to identify Inverted Hammer patterns
         for(int i = 0; i < candlesticks.Count; i++)
         {
-            if(IsInvertedHammer(candlesticks[i]))
+            if(candlesticks[i].isInvertedHammer)
             {
                 matches.Add(new PatternMatch
                 {
-                    // Inverted Hammer pattern consists of a single candlestick
+                    // Single candlestick pattern
                     startIndex = i,
                     endIndex = i, 
                     patternName = "Inverted Hammer"
@@ -29,18 +30,5 @@ public class InvertedHammerRecognizer : PatternRecognizer
         }
 
         return matches;
-    }
-
-    private bool IsInvertedHammer(smartCandlestick candlestick)
-    {
-        // Check if the candlestick represents an Inverted Hammer
-        var bodySize = Math.Abs(candlestick.close - candlestick.open);
-        var upperShadow = candlestick.high - Math.Max(candlestick.close, candlestick.open);
-        var lowerShadow = Math.Min(candlestick.close, candlestick.open) - candlestick.low;
-        bool isSmallBody = bodySize <= (threshold * Math.Abs(candlestick.high - candlestick.low));
-        bool isUpperShadowLong = upperShadow > bodySize * 2; // Upper shadow significantly longer than the body
-        bool isLowerShadowSmall = lowerShadow < bodySize;
-
-        return isSmallBody && isUpperShadowLong && isLowerShadowSmall;
     }
 }
