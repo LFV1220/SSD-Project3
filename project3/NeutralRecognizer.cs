@@ -3,20 +3,17 @@
 public class NeutralRecognizer : PatternRecognizer
 {
     // A threshold to define how close open and close should be
-    private readonly decimal threshold; 
+    private readonly decimal threshold = 0.01m;
 
-    public NeutralRecognizer(decimal threshold = 0.01m) : base(1, "Neutral")
-    {
-        this.threshold = threshold;
-    }
+    public NeutralRecognizer() : base(1, "Neutral") { }
 
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
         var matches = new List<PatternMatch>();
 
-        for(int i = 0; i < candlesticks.Count; i++)
+        for (int i = 0; i < candlesticks.Count; i++)
         {
-            if(IsNeutral(candlesticks[i]))
+            if (IsNeutral(candlesticks[i]))
             {
                 matches.Add(new PatternMatch
                 {

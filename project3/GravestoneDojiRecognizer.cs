@@ -16,7 +16,7 @@ public class GravestoneDojiRecognizer : PatternRecognizer
         // Logic to identify Gravestone Doji patterns
         for(int i = 0; i < candlesticks.Count; i++)
         {
-            if(IsGravestoneDoji(candlesticks[i]))
+            if (candlesticks[i].isGravestoneDoji)
             {
                 matches.Add(new PatternMatch
                 {
@@ -30,16 +30,5 @@ public class GravestoneDojiRecognizer : PatternRecognizer
         return matches;
     }
 
-    // Helper method to determine if a single candlestick is a Gravestone Doji
-    private bool IsGravestoneDoji(smartCandlestick candlestick)
-    {
-        // Check if the candlestick represents a Gravestone Doji
-        var bodySize = Math.Abs(candlestick.close - candlestick.open);
-        bool isSmallBody = bodySize <= (threshold * Math.Abs(candlestick.high - candlestick.low));
-        bool isLowEqualOpenClose = candlestick.low == candlestick.open && candlestick.low == candlestick.close;
-        bool isUpperShadowLong = (candlestick.high - candlestick.open) > bodySize;
-
-        return isSmallBody && isLowEqualOpenClose && isUpperShadowLong;
-    }
 }
 

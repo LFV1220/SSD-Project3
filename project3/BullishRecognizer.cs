@@ -11,7 +11,7 @@ public class BullishRecognizer : PatternRecognizer
 
         for(int i = 0; i < candlesticks.Count; i++)
         {
-            if(IsBullish(candlesticks[i]))
+            if(candlesticks[i].isBullish)
             {
                 matches.Add(new PatternMatch
                 {
@@ -23,11 +23,5 @@ public class BullishRecognizer : PatternRecognizer
         }
 
         return matches;
-    }
-
-    private bool IsBullish(smartCandlestick candlestick)
-    {
-        // A bullish candlestick is identified when the closing price is higher than the opening price
-        return candlestick.close > candlestick.open;
     }
 }
