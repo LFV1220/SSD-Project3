@@ -58,7 +58,7 @@
             chart1_stockData.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             chart1_stockData.Legends.Add(legend1);
-            chart1_stockData.Location = new Point(24, 24);
+            chart1_stockData.Location = new Point(359, 26);
             chart1_stockData.Name = "chart1_stockData";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Candlestick;
@@ -77,7 +77,7 @@
             chart2_volume.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             chart2_volume.Legends.Add(legend2);
-            chart2_volume.Location = new Point(24, 346);
+            chart2_volume.Location = new Point(359, 348);
             chart2_volume.Name = "chart2_volume";
             series2.ChartArea = "ChartArea1";
             series2.IsXValueIndexed = true;
@@ -92,14 +92,14 @@
             // 
             comboBox1_stockPattern.FormattingEnabled = true;
             comboBox1_stockPattern.Items.AddRange(new object[] { "Bullish", "Bearish", "Neutral", "Marubozu", "Doji", "Dragonfly Doji", "Gravestone Doji", "Hammer", "Inverted Hammer", "Bullish Engulfing", "Bearish Engulfing", "Bullish Harami", "Bearish Harami", "Peak", "Valley" });
-            comboBox1_stockPattern.Location = new Point(1029, 77);
+            comboBox1_stockPattern.Location = new Point(107, 72);
             comboBox1_stockPattern.Name = "comboBox1_stockPattern";
             comboBox1_stockPattern.Size = new Size(156, 23);
             comboBox1_stockPattern.TabIndex = 2;
             // 
             // dateTimePicker1_fromDate
             // 
-            dateTimePicker1_fromDate.Location = new Point(1000, 311);
+            dateTimePicker1_fromDate.Location = new Point(89, 306);
             dateTimePicker1_fromDate.MaxDate = new DateTime(2023, 12, 31, 0, 0, 0, 0);
             dateTimePicker1_fromDate.MinDate = new DateTime(2000, 1, 1, 0, 0, 0, 0);
             dateTimePicker1_fromDate.Name = "dateTimePicker1_fromDate";
@@ -109,7 +109,7 @@
             // 
             // dateTimePicker2_toDate
             // 
-            dateTimePicker2_toDate.Location = new Point(1000, 352);
+            dateTimePicker2_toDate.Location = new Point(89, 347);
             dateTimePicker2_toDate.MaxDate = new DateTime(2023, 12, 31, 0, 0, 0, 0);
             dateTimePicker2_toDate.MinDate = new DateTime(2000, 1, 1, 0, 0, 0, 0);
             dateTimePicker2_toDate.Name = "dateTimePicker2_toDate";
@@ -118,7 +118,7 @@
             // 
             // button1_reset
             // 
-            button1_reset.Location = new Point(1000, 566);
+            button1_reset.Location = new Point(78, 561);
             button1_reset.Name = "button1_reset";
             button1_reset.Size = new Size(154, 70);
             button1_reset.TabIndex = 5;
@@ -134,7 +134,7 @@
             // label1_stockPattern
             // 
             label1_stockPattern.AutoSize = true;
-            label1_stockPattern.Location = new Point(946, 80);
+            label1_stockPattern.Location = new Point(24, 75);
             label1_stockPattern.Name = "label1_stockPattern";
             label1_stockPattern.Size = new Size(83, 15);
             label1_stockPattern.TabIndex = 6;
@@ -143,7 +143,7 @@
             // label2_dateRange
             // 
             label2_dateRange.AutoSize = true;
-            label2_dateRange.Location = new Point(934, 277);
+            label2_dateRange.Location = new Point(23, 272);
             label2_dateRange.Name = "label2_dateRange";
             label2_dateRange.Size = new Size(73, 15);
             label2_dateRange.TabIndex = 7;
@@ -152,7 +152,7 @@
             // label3_toDate
             // 
             label3_toDate.AutoSize = true;
-            label3_toDate.Location = new Point(969, 358);
+            label3_toDate.Location = new Point(58, 353);
             label3_toDate.Name = "label3_toDate";
             label3_toDate.Size = new Size(25, 15);
             label3_toDate.TabIndex = 8;
@@ -160,7 +160,7 @@
             // 
             // button1_applyPattern
             // 
-            button1_applyPattern.Location = new Point(1038, 118);
+            button1_applyPattern.Location = new Point(116, 113);
             button1_applyPattern.Name = "button1_applyPattern";
             button1_applyPattern.Size = new Size(99, 34);
             button1_applyPattern.TabIndex = 9;
@@ -170,7 +170,7 @@
             // 
             // button2_applyDates
             // 
-            button2_applyDates.Location = new Point(1038, 400);
+            button2_applyDates.Location = new Point(127, 395);
             button2_applyDates.Name = "button2_applyDates";
             button2_applyDates.Size = new Size(99, 34);
             button2_applyDates.TabIndex = 10;
@@ -181,7 +181,7 @@
             // label1_fromDate
             // 
             label1_fromDate.AutoSize = true;
-            label1_fromDate.Location = new Point(956, 317);
+            label1_fromDate.Location = new Point(45, 312);
             label1_fromDate.Name = "label1_fromDate";
             label1_fromDate.Size = new Size(41, 15);
             label1_fromDate.TabIndex = 11;

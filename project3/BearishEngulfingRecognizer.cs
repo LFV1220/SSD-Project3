@@ -2,15 +2,15 @@
 
 public class BearishEngulfingRecognizer : PatternRecognizer
 {
-    // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public BearishEngulfingRecognizer() : base(2, "Bearish Engulfing") { }
 
+    // Function to find bearish engulfing stock patterns
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
+        // New list of matches
         var matches = new List<PatternMatch>();
 
-        // Logic to identify Bearish Engulfing patterns
-        for(int i = 0; i < candlesticks.Count - 1; i++) // -1 because we need a pair of candlesticks
+        for(int i = 0; i < candlesticks.Count - 1; i++)
         {
             if(IsBearishEngulfing(candlesticks[i], candlesticks[i + 1]))
             {

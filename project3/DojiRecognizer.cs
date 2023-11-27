@@ -2,17 +2,18 @@
 
 public class DojiRecognizer : PatternRecognizer
 {
-    // Nothing needs to go inside this constructor. Only necessary to initialize the PatternRecognizer base class through constructor chaining
     public DojiRecognizer() : base(1, "Doji") { }
 
+    // Function to find doji stock patterns
     public override IEnumerable<PatternMatch> recognizePattern(List<smartCandlestick> candlesticks)
     {
+        // New list of doji patterns indexes
         var matches = new List<PatternMatch>();
 
-        // Logic to identify Doji patterns...
         for(int i = 0; i < candlesticks.Count; i++)
         {
-            if(IsDoji(candlesticks[i]))
+            // if there are doji patterns, add it 
+            if(candlesticks[i].isDoji)
             {
                 matches.Add(new PatternMatch
                 {
@@ -25,16 +26,5 @@ public class DojiRecognizer : PatternRecognizer
         }
 
         return matches;
-    }
-
-    private bool IsDoji(smartCandlestick candlestick)
-    {
-        // You will implement the logic here to determine if the candlestick is a Doji
-        // A Doji is typically characterized by a very small body compared to its shadows
-        var body = Math.Abs(candlestick.close - candlestick.open);
-        var range = candlestick.high - candlestick.low;
-
-        // This is just an example threshold, you will define what constitutes a "small body"
-        return body <= (range * 0.1m);
     }
 }

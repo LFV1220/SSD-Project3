@@ -71,7 +71,7 @@ namespace project3
             PatternRecognizer recognizerInstance = Lr[stockPattern];
 
             if (recognizerInstance != null)
-            {   
+            {
                 // Create a list of recognizer instances
                 IEnumerable<PatternMatch> patternMatches = recognizerInstance.recognizePattern(getCandlesticksInDateRange(candlesticks).ToList());
 
@@ -83,7 +83,8 @@ namespace project3
                     {
                         if (i >= 0 && i < candlesticks.Count)
                         {
-                            annotations.Add(newAnnotation(candlesticks[i], i, comboBox1_stockPattern.SelectedItem.ToString()));
+                            DataPoint dp = chart1_stockData.Series["Series1"].Points[i];
+                            annotations.Add(newAnnotation(candlesticks[i], i, comboBox1_stockPattern.SelectedItem.ToString(), dp));
                         }
                     }
                 }
@@ -94,30 +95,17 @@ namespace project3
         }
 
         // Function to create a rectangle annotation 
-        private RectangleAnnotation newAnnotation(smartCandlestick cs, int i, string pattern)
+        private RectangleAnnotation newAnnotation(smartCandlestick cs, int i, string pattern, DataPoint dp)
         {
-            //// Define the width and height of the annotation
-            double annotationWidth = 10; // Adjust as needed
-            double annotationHeight = 10; // Adjust as needed
-
-            // Calculate the X-coordinate based on the index and chart properties
-            double chartWidth = chart1_stockData.Width;
-            double candlestickCount = candlesticks.Count;
-            double annotationX = (i + 0.5) * (chartWidth / candlestickCount) - (annotationWidth / 2);
-
-            // Calculate the Y-coordinate based on your logic or data
-            double annotationY = (double)cs.high * 5;
-
             // Add an annotation for this candlestick
             RectangleAnnotation annotation = new RectangleAnnotation();
             annotation.AxisX = chart1_stockData.ChartAreas[0].AxisX;
             annotation.AxisY = chart1_stockData.ChartAreas[0].AxisY;
-            annotation.X = annotationX;
-            annotation.Y = annotationY;
-            annotation.Width = annotationWidth;
-            annotation.Height = annotationHeight;
-            annotation.Text = pattern; // Replace with the appropriate pattern text
+            annotation.Width = 3;
+            annotation.Height = (double)cs.range;
+            //annotation.Text = pattern;
             annotation.BackColor = Color.FromArgb(128, Color.Yellow);
+            annotation.AnchorDataPoint = dp;
 
             return annotation;
         }
@@ -128,11 +116,11 @@ namespace project3
             BindingList<smartCandlestick> candlesticksInDateRange = new BindingList<smartCandlestick>();
 
             // Iterate over all the candlesticks and only add the ones in the date range to the new candlesticks list
-            foreach(var cs in this.candlesticks)
+            foreach (var cs in this.candlesticks)
             {
                 // Checks if the candlestick is within the date range and adds it to then new list if so
                 DateTime csDate = DateTime.Parse(cs.date);
-                if(csDate < dateTimePicker2_toDate.Value && csDate > dateTimePicker1_fromDate.Value)
+                if (csDate < dateTimePicker2_toDate.Value && csDate > dateTimePicker1_fromDate.Value)
                 {
                     candlesticksInDateRange.Add(cs);
                 }
@@ -145,13 +133,18 @@ namespace project3
         private void applyDates(object sender, EventArgs e)
         {
             // Check for valid date range
-            if(dateTimePicker2_toDate.Value < dateTimePicker1_fromDate.Value)
+            if (dateTimePicker2_toDate.Value < dateTimePicker1_fromDate.Value)
             {
                 // Error, invalid date range
                 MessageBox.Show("Please make sure the \"from\" date is before the \"to\" date.", "Invalid Date Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            // Initialize and clear annotations to the stockData chart
+            annotations = chart1_stockData.Annotations;
+            annotations.Clear();
+
+            // Display the data back 
             displayData(getCandlesticksInDateRange(candlesticks));
         }
 
